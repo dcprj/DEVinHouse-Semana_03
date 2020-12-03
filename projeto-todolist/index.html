@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="imagens/favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="estilos/style.css">
+    <script src="scripts/script.js" defer></script>
+    <title>To Do List - Projeto Semana 03</title>
+</head>
+
+<body>
+    <head>
+        <img src="imagens/favicon.svg" height="50%">
+        <h1>Lista de Afazeres</h1>
+    </head>
+    <section id="entradaTarefas">
+        <form action="">
+            <input type="text" id="inpTarefa" name="inpTarefa" placeholder="Digite uma tarefa" value="" required>
+            <input type="submit" value="Adicionar" id="btn-adicionar">
+        </form>
+    </section>
+    <section id="listaTarefas">
+        <div id="tarefa_1">
+            <input type="checkbox" class="chk-status" id="chk-tarefa_1">
+            <span class="tarefa" id="sp-tarefa_1">Ler "O Senhor dos Anéis"</span>
+            <button class="btn-apagar" id="btn-apagar_tarefa_1"><img class="img-btn-apagar" src="imagens/trash.svg" alt="botão apagar"></button>
+        </div>
+        <div id="tarefa_2">
+            <input type="checkbox" class="chk-status" id="chk-tarefa_2">
+            <span class="tarefa" id="sp-tarefa_2">Comprar pão</span>
+            <button class="btn-apagar" id="btn-apagar_tarefa_2"><img class="img-btn-apagar" src="imagens/trash.svg" alt="botão apagar"></button>
+        </div>
+        <div id="tarefa_3">
+            <input type="checkbox" class="chk-status" id="chk-tarefa_3">
+            <span class="tarefa" id="sp-tarefa_3">Desenvolver o projeto Semana 03</span>
+            <button class="btn-apagar" id="btn-apagar_tarefa_3"><img class="img-btn-apagar" src="imagens/trash.svg" alt="botão apagar"></button>
+        </div>
+        <div id="tarefa_4">
+            <input type="checkbox" class="chk-status" id="chk-tarefa_4">
+            <span class="tarefa" id="sp-tarefa_4">Fazer alguma coisa</span>
+            <button class="btn-apagar" id="btn-apagar_tarefa_4"><img class="img-btn-apagar" src="imagens/trash.svg" alt="botão apagar"></button>
+        </div>
+    </section>
+</body>
+
+</html>
