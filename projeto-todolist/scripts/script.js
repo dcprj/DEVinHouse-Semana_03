@@ -96,17 +96,16 @@ function ouveCaixasSelecao() {
 
 function ouveBtnApagar() {
     btnApagar = document.getElementsByClassName('btn-apagar');
-    for (i = 0; i < btnApagar.length; i++) {
-        let id_elemento = null;
-        id_elemento = btnApagar[i].id.replace('btn-apagar-', 'div-');
-        btnApagar[i].addEventListener('click', function () {
+    let id_elemento = null;
+    for (const btn of btnApagar) {             
+        btn.addEventListener('click', function () {
+            id_elemento = btn.id.replace('btn-apagar-', 'div-');
             let itemLista = document.getElementById(id_elemento);
             if (itemLista != null) {
                 sectionListaTarefas.removeChild(itemLista);
             }
         });
-    }
-    ouveCaixasSelecao();
+    }    
 }
 
 function carregaLocalStorage() {
