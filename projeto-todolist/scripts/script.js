@@ -1,6 +1,8 @@
+var tarefasObj = [];
 var sectionListaTarefas = document.getElementById('listaTarefas');
 var caixasSelecao = document.getElementsByClassName('chk-status');
 var btnApagar = document.getElementsByClassName('btn-apagar');
+var idTarefa;
 
 // Carrega items do localStorage
 carregaLocalStorage()
@@ -22,26 +24,9 @@ btnClicado.addEventListener('submit', function (e) {
     tarefa.value = "";
 });
 
-function addTarefa(txtTarefa) {
-    let todasTarefas = document.querySelectorAll("div.div-tarefa");
-
-    let maior = 0;
-
-    if (todasTarefas.length != 0) {
-
-        // Cria um array com os ids das tarefas
-        let idsTarefas = [];
-        for (i = 0; i < todasTarefas.length; i++) {
-            idTarefa = todasTarefas[i].id.split('_');
-            idsTarefas[i] = parseInt(idTarefa[1]);
-        }
-        // Pega o maior valor do array
-        maior = idsTarefas.reduce((a, b) => Math.max(a, b));
-    }
-
-    // Cria um id com um valor maior que o maior valor anterior
-    idTarefa = maior + 1;
-
+function addTarefa(txtTarefa) {  
+    
+    idTarefa += 1;
 
     var divItem = document.createElement('div');
     divItem.id = 'div-tarefa_' + idTarefa;
@@ -71,6 +56,13 @@ function addTarefa(txtTarefa) {
     btnItem.appendChild(imgItem);
     divItem.appendChild(btnItem);
     sectionListaTarefas.appendChild(divItem);
+
+    tarefasObj.push({"id": idTarefa,"tarefa": txtTarefa,"status": false});
+
+    tarefasStr=JSON.stringify(tarefasObj);
+
+    localStorage.setItem('tarefas',tarefasStr);
+    
 
     caixasSelecao = document.getElementsByClassName('chk-status');
     ouveCaixasSelecao();
@@ -109,21 +101,18 @@ function ouveBtnApagar() {
 }
 
 function carregaLocalStorage() {
-    let tarefasStr = localStorage.getItem('tarefas');
-    let tarefasObj = [];
+    let tarefasStr = localStorage.getItem('tarefas');    
 
     if (tarefasStr != null) {
 
-        let tarefasObj = JSON.parse(tarefasStr);
+        tarefasObj = JSON.parse(tarefasStr);
 
-        let idTarefa = 0;
         let tarefa = null;
 
         for (i = 0; i < tarefasObj.length; i++) {
 
-            // Cria um id para a tarefa
             tarefa = tarefasObj[i];
-            idTarefa = i + 1;
+            idTarefa = tarefasObj[i].id;
 
             var divItem = document.createElement('div');
             divItem.id = 'div-tarefa_' + idTarefa;
