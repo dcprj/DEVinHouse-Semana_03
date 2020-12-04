@@ -1,4 +1,9 @@
 var sectionListaTarefas = document.getElementById('listaTarefas');
+var caixasSelecao = document.getElementsByClassName('chk-status');
+var btnApagar = document.getElementsByClassName('btn-apagar');
+
+// Carrega items do localStorage
+carregaLocalStorage()
 
 // Ouvindo o botão apagar para deletar as tarefas.
 ouveBtnApagar();
@@ -28,15 +33,15 @@ function addTarefa(txtTarefa) {
         let idsTarefas = [];
         for (i = 0; i < todasTarefas.length; i++) {
             idTarefa = todasTarefas[i].id.split('_');
-            idsTarefas[i] = parseInt(idTarefa[1]);            
+            idsTarefas[i] = parseInt(idTarefa[1]);
         }
         // Pega o maior valor do array
-        maior = idsTarefas.reduce((a, b) => Math.max(a, b));        
+        maior = idsTarefas.reduce((a, b) => Math.max(a, b));
     }
 
     // Cria um id com um valor maior que o maior valor anterior
     idTarefa = maior + 1;
-    
+
 
     var divItem = document.createElement('div');
     divItem.id = 'div-tarefa_' + idTarefa;
@@ -69,22 +74,19 @@ function addTarefa(txtTarefa) {
 
     caixasSelecao = document.getElementsByClassName('chk-status');
     ouveCaixasSelecao();
+    btnApagar = document.getElementsByClassName('btn-apagar');
     ouveBtnApagar();
 }
 
 function ouveCaixasSelecao() {
-
-    let caixasSelecao = document.getElementsByClassName('chk-status');
-
-    for (let i = 0; i < caixasSelecao.length; i++) {
-        
-
-        let id_elemento = null;
-        id_elemento = caixasSelecao[i].id.replace('chk-', 'sp-');
-        caixasSelecao[i].addEventListener('click', function () {
-            if (caixasSelecao[i].checked) {
+    caixasSelecao = document.getElementsByClassName('chk-status');
+    let id_elemento = null;
+    for (const caixaSelecao of caixasSelecao) {        
+        caixaSelecao.addEventListener('click', function () {                       
+            id_elemento = caixaSelecao.id.replace('chk-', 'sp-');
+            if (caixaSelecao.checked) {            
                 document.getElementById(id_elemento).style.textDecoration = 'line-through';
-            } else {
+            } else {            
                 document.getElementById(id_elemento).style.textDecoration = 'none';
             }
         });
@@ -93,30 +95,72 @@ function ouveCaixasSelecao() {
 
 
 function ouveBtnApagar() {
-
-    let btnApagar = document.getElementsByClassName('btn-apagar');
-
-    
-
+    btnApagar = document.getElementsByClassName('btn-apagar');
     for (i = 0; i < btnApagar.length; i++) {
-        
-
         let id_elemento = null;
         id_elemento = btnApagar[i].id.replace('btn-apagar-', 'div-');
         btnApagar[i].addEventListener('click', function () {
-
-            
-
             let itemLista = document.getElementById(id_elemento);
-
-            
-
             if (itemLista != null) {
-
                 sectionListaTarefas.removeChild(itemLista);
+            }
+        });
+    }
+    ouveCaixasSelecao();
+}
 
+function carregaLocalStorage() {
+    let tarefasStr = localStorage.getItem('tarefas');
+    let tarefasObj = [];
+
+    if (tarefasStr != null) {
+
+        let tarefasObj = JSON.parse(tarefasStr);
+
+        let idTarefa = 0;
+        let tarefa = null;
+
+        for (i = 0; i < tarefasObj.length; i++) {
+
+            // Cria um id para a tarefa
+            tarefa = tarefasObj[i];
+            idTarefa = i + 1;
+
+            var divItem = document.createElement('div');
+            divItem.id = 'div-tarefa_' + idTarefa;
+            divItem.className = 'div-tarefa';
+
+            var chkBoxItem = document.createElement('input');
+            chkBoxItem.type = 'checkbox';
+            chkBoxItem.className = 'chk-status';
+            chkBoxItem.checked = tarefa.status;
+            chkBoxItem.id = 'chk-tarefa_' + idTarefa;
+
+            var spanItem = document.createElement('span');
+            spanItem.className = 'tarefa';
+            spanItem.id = 'sp-tarefa_' + idTarefa;
+
+            if (tarefa.status) {
+                spanItem.textContent = tarefa.tarefa;
+                spanItem.style.textDecoration = 'line-through'
+            } else {
+                spanItem.textContent = tarefa.tarefa;
             }
 
-        });
+            var btnItem = document.createElement('button');
+            btnItem.className = 'btn-apagar';
+            btnItem.id = 'btn-apagar-tarefa_' + idTarefa;
+
+            var imgItem = document.createElement('img');
+            imgItem.className = "img-btn-apagar";
+            imgItem.src = 'imagens/trash.svg';
+            imgItem.alt = 'botão apagar';
+
+            divItem.appendChild(chkBoxItem);
+            divItem.appendChild(spanItem);
+            btnItem.appendChild(imgItem);
+            divItem.appendChild(btnItem);
+            sectionListaTarefas.appendChild(divItem);
+        }
     }
 }
