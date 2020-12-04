@@ -23,17 +23,22 @@ function addTarefa(txtTarefa) {
 
     // Busca todas as tarefas
     let todasTarefas = document.querySelectorAll("div.div-tarefa");
+    
+    let maior = 0;
 
-    // Cria um array com os ids das tarefas
-    let idsTarefas = [];
-    for (i = 0; i < todasTarefas.length; i++) {
-        idTarefa = todasTarefas[i].id.split('_');
-        idsTarefas[i] = parseInt(idTarefa[1]);
-        console.log(`idsTarefas[${i}] = ${idsTarefas[i]}`);
+    if (todasTarefas.length != 0) {
+
+        // Cria um array com os ids das tarefas
+        let idsTarefas = [];
+        for (i = 0; i < todasTarefas.length; i++) {
+            idTarefa = todasTarefas[i].id.split('_');
+            idsTarefas[i] = parseInt(idTarefa[1]);
+            console.log(`idsTarefas[${i}] = ${idsTarefas[i]}`);
+        }
+        // Pega o maior valor do array
+        maior = idsTarefas.reduce((a, b) => Math.max(a, b));
+        console.log(`maior = ${maior}`);
     }
-    // Pega o maior valor do array
-    let maior = idsTarefas.reduce((a, b) => Math.max(a, b));
-    console.log(`maior = ${maior}`);
 
     // Cria um id com um valor maior que o maior valor anterior
     idTarefa = maior + 1;
