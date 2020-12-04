@@ -24,6 +24,7 @@ function addTarefa(txtTarefa) {
 
     var divItem = document.createElement('div');
     divItem.id = 'tarefa_' + idTarefa;
+    divItem.className = 'div-tarefa';
 
     var chkBoxItem = document.createElement('input');
     chkBoxItem.type = 'checkbox';
