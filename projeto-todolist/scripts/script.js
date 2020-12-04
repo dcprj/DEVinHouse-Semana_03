@@ -18,12 +18,8 @@ btnClicado.addEventListener('submit', function (e) {
 });
 
 function addTarefa(txtTarefa) {
-    //  numTarefas = document.getElementsByClassName('tarefa').length;
-    //  idTarefa = numTarefas + 1;
-
-    // Busca todas as tarefas
     let todasTarefas = document.querySelectorAll("div.div-tarefa");
-    
+
     let maior = 0;
 
     if (todasTarefas.length != 0) {
@@ -32,17 +28,15 @@ function addTarefa(txtTarefa) {
         let idsTarefas = [];
         for (i = 0; i < todasTarefas.length; i++) {
             idTarefa = todasTarefas[i].id.split('_');
-            idsTarefas[i] = parseInt(idTarefa[1]);
-            console.log(`idsTarefas[${i}] = ${idsTarefas[i]}`);
+            idsTarefas[i] = parseInt(idTarefa[1]);            
         }
         // Pega o maior valor do array
-        maior = idsTarefas.reduce((a, b) => Math.max(a, b));
-        console.log(`maior = ${maior}`);
+        maior = idsTarefas.reduce((a, b) => Math.max(a, b));        
     }
 
     // Cria um id com um valor maior que o maior valor anterior
     idTarefa = maior + 1;
-    console.log(`idTarefa = ${idTarefa}`);
+    
 
     var divItem = document.createElement('div');
     divItem.id = 'div-tarefa_' + idTarefa;
@@ -83,7 +77,7 @@ function ouveCaixasSelecao() {
     let caixasSelecao = document.getElementsByClassName('chk-status');
 
     for (let i = 0; i < caixasSelecao.length; i++) {
-        console.log("Índice caixasSelecao --> " + i);
+        
 
         let id_elemento = null;
         id_elemento = caixasSelecao[i].id.replace('chk-', 'sp-');
@@ -102,23 +96,26 @@ function ouveBtnApagar() {
 
     let btnApagar = document.getElementsByClassName('btn-apagar');
 
-    console.log("Número de itens --> " + btnApagar.length);
+    
 
     for (i = 0; i < btnApagar.length; i++) {
-        console.log("Índice botão apagar --> " + i);
+        
 
         let id_elemento = null;
         id_elemento = btnApagar[i].id.replace('btn-apagar-', 'div-');
         btnApagar[i].addEventListener('click', function () {
 
-            console.log("************** Elemento a ser apagado " + id_elemento + " **************");
+            
 
             let itemLista = document.getElementById(id_elemento);
 
-            console.log("id_elemento --> " + id_elemento);
-            console.log("itemLista --> " + itemLista);
+            
 
-            sectionListaTarefas.removeChild(itemLista);
+            if (itemLista != null) {
+
+                sectionListaTarefas.removeChild(itemLista);
+
+            }
 
         });
     }
