@@ -1,29 +1,46 @@
-var caixasSelecao = document.getElementsByClassName('chk-status');
-ouveCaixasSelecao();
+var sectionListaTarefas = document.getElementById('listaTarefas');
+
+// Ouvindo o botão apagar para deletar as tarefas.
+ouveBtnApagar();
 
 // Ouvindo as caixas de seleção para marcar ou desmarcar as tarefas.
-
+ouveCaixasSelecao();
 
 // Ouvindo o botão submit para adicionar tarefas
 var btnClicado = document.getElementById('form-entradaTarefas');
 
 
-btnClicado.addEventListener('submit', function (e) {    
+btnClicado.addEventListener('submit', function (e) {
     e.preventDefault();
     var tarefa = document.getElementById('inp-Tarefa');
     addTarefa(tarefa.value);
-    tarefa.value="";
+    tarefa.value = "";
 });
 
 function addTarefa(txtTarefa) {
-    var sectionListaTarefas = document.getElementById('listaTarefas');
+    //  numTarefas = document.getElementsByClassName('tarefa').length;
+    //  idTarefa = numTarefas + 1;
 
-    numTarefas = document.getElementsByClassName('tarefa').length;
+    // Busca todas as tarefas
+    let todasTarefas = document.querySelectorAll("div.div-tarefa");
 
-    idTarefa = numTarefas + 1;
+    // Cria um array com os ids das tarefas
+    let idsTarefas = [];
+    for (i = 0; i < todasTarefas.length; i++) {
+        idTarefa = todasTarefas[i].id.split('_');
+        idsTarefas[i] = parseInt(idTarefa[1]);
+        console.log(`idsTarefas[${i}] = ${idsTarefas[i]}`);
+    }
+    // Pega o maior valor do array
+    let maior = idsTarefas.reduce((a, b) => Math.max(a, b));
+    console.log(`maior = ${maior}`);
+
+    // Cria um id com um valor maior que o maior valor anterior
+    idTarefa = maior + 1;
+    console.log(`idTarefa = ${idTarefa}`);
 
     var divItem = document.createElement('div');
-    divItem.id = 'tarefa_' + idTarefa;
+    divItem.id = 'div-tarefa_' + idTarefa;
     divItem.className = 'div-tarefa';
 
     var chkBoxItem = document.createElement('input');
@@ -38,7 +55,7 @@ function addTarefa(txtTarefa) {
 
     var btnItem = document.createElement('button');
     btnItem.className = 'btn-apagar';
-    btnItem.id = 'btn-apagar_tarefa_' + idTarefa;
+    btnItem.id = 'btn-apagar-tarefa_' + idTarefa;
 
     var imgItem = document.createElement('img');
     imgItem.className = "img-btn-apagar";
@@ -50,15 +67,18 @@ function addTarefa(txtTarefa) {
     btnItem.appendChild(imgItem);
     divItem.appendChild(btnItem);
     sectionListaTarefas.appendChild(divItem);
-    
+
     caixasSelecao = document.getElementsByClassName('chk-status');
     ouveCaixasSelecao();
+    ouveBtnApagar();
 }
 
 function ouveCaixasSelecao() {
 
+    let caixasSelecao = document.getElementsByClassName('chk-status');
+
     for (let i = 0; i < caixasSelecao.length; i++) {
-        console.log(i);
+        console.log("Índice caixasSelecao --> " + i);
 
         let id_elemento = null;
         id_elemento = caixasSelecao[i].id.replace('chk-', 'sp-');
@@ -68,6 +88,33 @@ function ouveCaixasSelecao() {
             } else {
                 document.getElementById(id_elemento).style.textDecoration = 'none';
             }
+        });
+    }
+}
+
+
+function ouveBtnApagar() {
+
+    let btnApagar = document.getElementsByClassName('btn-apagar');
+
+    console.log("Número de itens --> " + btnApagar.length);
+
+    for (i = 0; i < btnApagar.length; i++) {
+        console.log("Índice botão apagar --> " + i);
+
+        let id_elemento = null;
+        id_elemento = btnApagar[i].id.replace('btn-apagar-', 'div-');
+        btnApagar[i].addEventListener('click', function () {
+
+            console.log("************** Elemento a ser apagado " + id_elemento + " **************");
+
+            let itemLista = document.getElementById(id_elemento);
+
+            console.log("id_elemento --> " + id_elemento);
+            console.log("itemLista --> " + itemLista);
+
+            sectionListaTarefas.removeChild(itemLista);
+
         });
     }
 }
