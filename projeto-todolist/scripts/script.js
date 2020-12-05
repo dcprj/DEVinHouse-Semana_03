@@ -80,11 +80,36 @@ function ouveCaixasSelecao() {
     for (const caixaSelecao of caixasSelecao) {
         caixaSelecao.addEventListener('click', function () {
             id_elemento = caixaSelecao.id.replace('chk-', 'sp-');
+
+            let listaDeIds = tarefasObj.map((e) => e.id);
+            console.log(listaDeIds);
+
+            console.log('id_elemento = ' + id_elemento);
+            let auxiliar = id_elemento.split('_');
+            let indiceAlterar = parseInt(auxiliar[1]);
+            console.log('indiceAlterar = ' + indiceAlterar);
+            let indice = listaDeIds.indexOf(indiceAlterar);
+            console.log(indice);
+
+
+          
+
+
+
             if (caixaSelecao.checked) {
                 document.getElementById(id_elemento).style.textDecoration = 'line-through';
+                tarefasObj[indice].status = true;
+
             } else {
                 document.getElementById(id_elemento).style.textDecoration = 'none';
+                tarefasObj[indice].status = false;
             }
+                        
+            console.log(tarefasObj);
+
+            tarefasStr = JSON.stringify(tarefasObj);
+
+            localStorage.setItem('tarefas', tarefasStr);
         });
     }
 }
@@ -119,8 +144,6 @@ function ouveBtnApagar() {
                 tarefasStr = JSON.stringify(tarefasObj);
 
                 localStorage.setItem('tarefas', tarefasStr);
-
-
 
             }
         });
@@ -178,5 +201,5 @@ function carregaLocalStorage() {
             sectionListaTarefas.appendChild(divItem);
         }
     }
-    
+
 }
