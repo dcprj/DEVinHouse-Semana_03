@@ -2,7 +2,7 @@ var tarefasObj = [];
 var sectionListaTarefas = document.getElementById('listaTarefas');
 var caixasSelecao = document.getElementsByClassName('chk-status');
 var btnApagar = document.getElementsByClassName('btn-apagar');
-var idTarefa;
+var idTarefa = 0;
 
 // Carrega items do localStorage
 carregaLocalStorage()
@@ -24,8 +24,8 @@ btnClicado.addEventListener('submit', function (e) {
     tarefa.value = "";
 });
 
-function addTarefa(txtTarefa) {  
-    
+function addTarefa(txtTarefa) {
+
     idTarefa += 1;
 
     var divItem = document.createElement('div');
@@ -57,12 +57,16 @@ function addTarefa(txtTarefa) {
     divItem.appendChild(btnItem);
     sectionListaTarefas.appendChild(divItem);
 
-    tarefasObj.push({"id": idTarefa,"tarefa": txtTarefa,"status": false});
+    tarefasObj.push({
+        "id": idTarefa,
+        "tarefa": txtTarefa,
+        "status": false
+    });
 
-    tarefasStr=JSON.stringify(tarefasObj);
+    tarefasStr = JSON.stringify(tarefasObj);
 
-    localStorage.setItem('tarefas',tarefasStr);
-    
+    localStorage.setItem('tarefas', tarefasStr);
+
 
     caixasSelecao = document.getElementsByClassName('chk-status');
     ouveCaixasSelecao();
@@ -73,12 +77,12 @@ function addTarefa(txtTarefa) {
 function ouveCaixasSelecao() {
     caixasSelecao = document.getElementsByClassName('chk-status');
     let id_elemento = null;
-    for (const caixaSelecao of caixasSelecao) {        
-        caixaSelecao.addEventListener('click', function () {                       
+    for (const caixaSelecao of caixasSelecao) {
+        caixaSelecao.addEventListener('click', function () {
             id_elemento = caixaSelecao.id.replace('chk-', 'sp-');
-            if (caixaSelecao.checked) {            
+            if (caixaSelecao.checked) {
                 document.getElementById(id_elemento).style.textDecoration = 'line-through';
-            } else {            
+            } else {
                 document.getElementById(id_elemento).style.textDecoration = 'none';
             }
         });
@@ -89,19 +93,42 @@ function ouveCaixasSelecao() {
 function ouveBtnApagar() {
     btnApagar = document.getElementsByClassName('btn-apagar');
     let id_elemento = null;
-    for (const btn of btnApagar) {             
+    for (const btn of btnApagar) {
         btn.addEventListener('click', function () {
             id_elemento = btn.id.replace('btn-apagar-', 'div-');
+            console.log(id_elemento);
             let itemLista = document.getElementById(id_elemento);
             if (itemLista != null) {
                 sectionListaTarefas.removeChild(itemLista);
+
+                // cria um novo array com os ids
+                let listaDeIds = tarefasObj.map((e) => e.id);
+                console.log(listaDeIds);
+
+                // busca o indice do array pelo id
+
+                console.log('id_elemento = ' + id_elemento);
+                let auxiliar = id_elemento.split('_');
+                let indiceDeletar = parseInt(auxiliar[1]);
+                console.log('indiceDeletar = ' + indiceDeletar);
+                let indice = listaDeIds.indexOf(indiceDeletar);
+                console.log(indice);
+                tarefasObj.splice(indice, 1);
+                console.log(tarefasObj);
+
+                tarefasStr = JSON.stringify(tarefasObj);
+
+                localStorage.setItem('tarefas', tarefasStr);
+
+
+
             }
         });
-    }    
+    }
 }
 
 function carregaLocalStorage() {
-    let tarefasStr = localStorage.getItem('tarefas');    
+    let tarefasStr = localStorage.getItem('tarefas');
 
     if (tarefasStr != null) {
 
@@ -151,4 +178,5 @@ function carregaLocalStorage() {
             sectionListaTarefas.appendChild(divItem);
         }
     }
+    
 }
